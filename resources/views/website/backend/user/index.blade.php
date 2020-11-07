@@ -1,4 +1,7 @@
 @extends('website.backend.layouts.main')
+
+@section('title','User')
+
 @section('content')
 
     <div class="main-content-part">

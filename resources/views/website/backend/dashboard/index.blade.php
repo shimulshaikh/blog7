@@ -1,4 +1,7 @@
 @extends('website.backend.layouts.main')
+
+@section('title','Home')
+
 @section('content')
                             <div class="main-content-part">
                                 <ul class="nav nav-tabs">

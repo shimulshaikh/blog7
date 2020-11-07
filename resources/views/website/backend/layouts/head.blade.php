@@ -4,7 +4,7 @@
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
         <!-- TITLE -->
-        <title>Home | UTTARA</title>
+        <title>@yield('title') | Blog</title>
 
         <!-- FAVICON -->
         <link rel="shortcut icon" href="{{asset('backend/dist/img/favIcon.png')}}">

@@ -1,7 +1,7 @@
 <header class="main-header">
 
                 <!-- START LOGO PART -->
-                <a href="index.html" class="logo">
+                <a href="{{route('backend.index')}}" class="logo">
                     <!-- START MINI LOGO FOR SIDEBAR PART -->
                     <span class="logo-mini"><b>U</b></span>
 
