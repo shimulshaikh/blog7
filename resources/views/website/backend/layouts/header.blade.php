@@ -23,10 +23,29 @@
                     <!-- START NAVBAR CUSTOM MENU PART -->
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
-                            <li class="log-out-menu">
-                                <a href="#" class="custom-menu-log-out">
-                                    <i class="fa fa-power-off"></i> Log Out
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle fa fa-power-off" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
                                 </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+                                    
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                    
+                                        @can('manage-users') 
+                                        <a class="dropdown-item" href="{{route('user.index')}}">
+                                          User Management
+                                        </a>
+                                        @endcan
+                                </div>
                             </li>
                         </ul>
                     </div><!-- NAVBAR CUSTOM MENU PART END -->

@@ -22,9 +22,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'dashboard',], function() {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth'],], function() {
 
 	Route::get('/', 'BackendController@index')->name('backend.index');
+
+	Route::resource('/user', UsersController::class); 
 
 	});
 
