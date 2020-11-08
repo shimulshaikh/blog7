@@ -80,7 +80,6 @@ class TagController extends Controller
                     'slug' => $slug
                 ]);        
         
-        //return response()->json(['success'=>'Customer saved successfully.']);
         return response()->json($data);
     }
 

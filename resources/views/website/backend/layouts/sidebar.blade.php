@@ -36,16 +36,17 @@
 
                         <li class="treeview">
                             <a href="#">
-                                <img class="img-responsive searchIcon" src="{{asset('backend/dist/img/searchIcon.png')}}"><span class="aside-main-menu">Cancel</span>
+                                <img class="img-responsive searchIcon" src="{{asset('backend/dist/img/searchIcon.png')}}"><span class="aside-main-menu">Category</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-caret-down pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">Level One</a></li>
-                                <li><a href="#"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">Level One</a></li>
+                                <li><a href="{{route('category.index')}}"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">category</a></li>
                             </ul>
                         </li>
+
+                      
 
                         <li class="treeview">
                             <a href="#">
