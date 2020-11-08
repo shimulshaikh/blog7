@@ -33,6 +33,8 @@
         </div><!-- WRAPPER SECTION END -->
 
         @include('website.backend.layouts.foot')
+        
+        @stack('js')
 
     </body>
 </html>

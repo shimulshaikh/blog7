@@ -24,13 +24,13 @@
                     <ul class="sidebar-menu">
                         <li class="treeview">
                             <a href="#">
-                                <img class="img-responsive searchIcon" src="{{asset('backend/dist/img/searchIcon.png')}}"><span class="aside-main-menu">Approval</span>
+                                <img class="img-responsive searchIcon" src="{{asset('backend/dist/img/searchIcon.png')}}"><span class="aside-main-menu">Tags</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-caret-down pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="#"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">Level One</a></li>
+                                <li><a href="{{route('tag.index')}}"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">Tag</a></li>
                             </ul>
                         </li>
 

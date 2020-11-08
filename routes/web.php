@@ -27,6 +27,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth'],], function() {
 
 	Route::resource('/user', UsersController::class); 
 
-	});
+	Route::resource('/tag', TagController::class); 
+
+});
 
 
