@@ -16,12 +16,10 @@
                     <div class="x_content">
                       <div class="row justity-content-center">
                         <div class="col-md-12">
-                          @include('partials.alerts')
                           <div id="my_div"></div>
                           <div class="card">
                             <div class="card-header" style="margin-bottom: 15px">
-                              <!-- Button trigger modal -->
-                                   <a class="btn btn-success" href="javascript:void(0)" id="createNew"> Add Tag</a>
+                                   <a href="{{ route('tag.create') }}" class="btn btn-success">Add Tag</a>
                             </div>
                             <div class="card-body">
 
@@ -33,7 +31,7 @@
                                     <th>Name</th>
                                     <th>Create Time</th>
                                     <th>Update Time</th>
-                                    <th>Action</th>
+                                    <th width="15%">Action</th>
                                   </tr>
                                 </thead>
                               </table>    
@@ -83,17 +81,14 @@
 
 
 @push('css')
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @endpush
 
 @push('js')
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
-<!-- For ajax CRUD use shimul -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
 
@@ -122,91 +117,20 @@
                     { data: 'name', name: 'name' },
                     { data: 'created_at', name: 'created_at' },
                     { data: 'updated_at', name: 'updated_at' },
-                    { data: 'action', name: 'action' },
+                    { data: 'actions', name: 'actions' },
                   ]
 
                 });
 
-                //start CRUD  
-        $('#createNew').click(function () {
-        $('#saveBtn').val("create-tag");
-        $('#tag_id').val('');
-        $('#Form').trigger("reset");
-        $('#modelHeading').html("Create New Tag");
-        $('#Modal').modal('show');
-        });
-
-
-        $('body').on('click', '.editTag', function () {
-      var tag_id = $(this).data('id');
-      $.get("{{ route('tag.index') }}" +'/' + tag_id +'/edit', function (data) {
-          $('#modelHeading').html("Edit Tag");
-          $('#saveBtn').val("edit-user");
-          $('#Modal').modal('show');
-          $('#tag_id').val(data.id);
-          $('#name').val(data.name);
-      })
-   });
-
-        $('#saveBtn').click(function (e) {
-        e.preventDefault();
-        $(this).html('save Change');
-    
-        $.ajax({
-          data: $('#Form').serialize(),
-          url: "{{ route('tag.store') }}",
-          type: "POST",
-          dataType: 'json',
-          
-          success: function (data) {
-     
-              $('#Form').trigger("reset");
-              $('#Modal').modal('hide');
-              $('#my_div').html(data);
-              table.draw();
-
-              iziToast.success({
-                title: 'Tag Saved successfully',
-                message: '{{ Session('success') }}',
-                position: 'bottomRight'
-              });
-
-          },
-
-          error: function (data) {
-              console.log('Error:', data);
-              $('#saveBtn').html('Save Changes');
-          }
-      });
-    });
-
-
-       $('body').on('click', '.deleteTag', function () {
-     
-        var tag_id = $(this).data("id");
-        if (confirm("Are You sure want to delete !")) {
-            $.ajax({
-            type: "DELETE",
-            url: "{{ route('tag.store') }}"+'/'+tag_id,
-            success: function (data) {
-                table.draw();
-
-                iziToast.success({
-                title: 'Tag Deleted Successfully',
-                message: '{{ Session('success') }}',
-                position: 'bottomRight'
-                });
-            },
-            error: function (data) {
-                console.log('Error:', data);
-            }
-          });
-        }
-        
-    }); 
-
-
+      
     });
 </script>
+
+
+@if(Session::has('success'))
+  <script type="text/javascript">
+    toastr.success("{!! Session::get('success') !!}");
+  </script>
+@endif
 
 @endpush

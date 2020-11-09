@@ -46,43 +46,18 @@
                             </ul>
                         </li>
 
-                      
-
                         <li class="treeview">
                             <a href="#">
-                                <img class="img-responsive searchIcon" src="{{asset('backend/dist/img/searchIcon.png')}}"><span class="aside-main-menu">Edit</span>
+                                <img class="img-responsive searchIcon" src="{{asset('backend/dist/img/searchIcon.png')}}"><span class="aside-main-menu">Posts</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-caret-down pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li>
-                                    <a href="#">
-                                        <img class="img-responsive folderIcon" src="{{asset('backend/dist/img/folderIcon.png')}}">
-                                        <div class="sub-folder">Level One</div>
-                                        <span class="pull-right-container">
-                                            <i class="fa fa-caret-down pull-right"></i>
-                                        </span>
-                                    </a>
-                                    <ul class="treeview-menu">
-                                        <li><a href="#"><img class="img-responsive bulletIcon" src="dist/img/bulletIcon.png">Level Two</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="{{route('post.index')}}"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">Post</a></li>
                             </ul>
                         </li>
-
-                        <li class="treeview">
-                            <a href="#">
-                                <img class="img-responsive searchIcon" src="{{asset('backend/dist/img/searchIcon.png')}}"><span class="aside-main-menu">Report</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-caret-down pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">Level One</a></li>
-                                <li><a href="#"><img class="img-responsive bulletIcon" src="dist/img/bulletIcon.png">Level One</a></li>
-                            </ul>
-                        </li>
+                        
                     </ul><!-- SIDEBAR MENU PART END -->
                 </section><!-- START SIDEBAR SECTION -->
             </aside><!-- LEFT ASIDE SECTION END -->

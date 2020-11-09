@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Image;
 use Redirect,Response;
-use File;
 
 class CategoryController extends Controller
 {
@@ -41,14 +40,12 @@ class CategoryController extends Controller
                 })
                 ->rawColumns(['image', 'action'])
 
-                ->addColumn('action', function($data){
-                    $button = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Edit" class="edit btn btn-info btn-sm editCategory"><i class="far fa-edit"></i> Edit </a>';
-                    $button .= '&nbsp;&nbsp;';
-                    $button .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->id.'" data-original-title="Delete" class="delete btn btn-danger btn-sm deleteCategory">Delete</a>';
+                ->addColumn('actions', function($row){
+                    $editUrl = route('category.edit', $row->id);
+                    $deleteUrl = route('category.destroy', $row->id);
 
-                    return $button;
-                })
-                ->rawColumns(['action'])
+                    return view('website.backend.colmun.column', compact('editUrl', 'deleteUrl'));
+                    })
                 ->addIndexColumn()->make(true);
 
         } 
@@ -63,7 +60,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('website.backend.category.create');
     }
 
     /**
@@ -74,6 +71,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        request()->validate([
+            'name' => 'required|unique:categories',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp'
+        ]);
+
+
         $slug = Str::slug($request->name, '-');
 
         $image = $request->file('image');
@@ -92,8 +95,8 @@ class CategoryController extends Controller
             }
 
             //resize image for category and upload
-            $categoryImage = Image::make($image)->resize(1600,479)->save();
-            Storage::disk('public')->put('category/'.$imageName,$categoryImage);
+            $img = Image::make($image)->resize(1600,479)->save(storage_path('app/public/category').'/'.$imageName);
+            Storage::disk('public')->put('category/'.$imageName,$img);
 
             //check category slider dir is exists
             if (!Storage::disk('public')->exists('category/slider')) 
@@ -102,7 +105,7 @@ class CategoryController extends Controller
             }
 
             //resize image for category slider and upload
-            $slider = Image::make($image)->resize(500,333)->save();
+            $slider = Image::make($image)->resize(500,333)->save(storage_path('app/public/category/slider').'/'.$imageName);
             Storage::disk('public')->put('category/slider/'.$imageName,$slider);
 
         }
@@ -110,16 +113,20 @@ class CategoryController extends Controller
             $imageName = "default.png";
         }
 
+        $category = new Category();
 
+        $category->name = request('name');
+        $category->slug = $slug;
+        $category->image = $imageName;
 
-        $data = Category::updateOrCreate(['id' => $request->category_id],
-                [
-                    'name' => $request->name,
-                    'slug' => $slug,
-                    'image' => $imageName
-                ]);        
-        
-        return response()->json($data);
+        if ($category->save()) {
+                $request->session()->flash('success','Category has been created');
+            }
+            else{
+                $request->session()->flash('error','There was an error created the Category');
+            }
+
+            return redirect()->route('category.index');
     }
 
     /**
@@ -141,8 +148,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-         $category = Category::findorFail($id);
-        return response()->json($category);
+          $category = Category::findorFail($id);
+            
+        return view('website.backend.category.edit', compact('category'));
     }
 
     /**
@@ -152,9 +160,76 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        request()->validate([
+            'name' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp'
+        ]);
+
+
+        $slug = Str::slug($request->name, '-');
+
+        $image = $request->file('image');
+
+        $category = Category::findorFail($id);
+ 
+        if(isset($image)){
+
+            //make unique nake for image
+            $currentDate = Carbon::now()->toDateString();
+
+            $imageName = $slug.'-'.$currentDate.'-'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            //check category dir is exists
+            if (!Storage::disk('public')->exists('category')) 
+            {
+                Storage::disk('public')->makeDirectory('category');
+            }
+
+            //delete old image
+            if (Storage::disk('public')->exists('category/'.$category->image))
+            {
+                Storage::disk('public')->delete('category/'.$category->image);
+            }
+
+            //resize image for category and upload
+            $img = Image::make($image)->resize(1600,479)->save(storage_path('app/public/category').'/'.$imageName);
+            Storage::disk('public')->put('category/'.$imageName,$img);
+
+            //check category slider dir is exists
+            if (!Storage::disk('public')->exists('category/slider')) 
+            {
+                Storage::disk('public')->makeDirectory('category/slider');
+            }
+
+            //delete old slider image
+            if (Storage::disk('public')->exists('category/slider/'.$category->image))
+            {
+                Storage::disk('public')->delete('category/slider/'.$category->image);
+            }
+
+            //resize image for category slider and upload
+            $slider = Image::make($image)->resize(500,333)->save(storage_path('app/public/category/slider').'/'.$imageName);
+            Storage::disk('public')->put('category/slider/'.$imageName,$slider);
+
+        }
+        else{
+            $imageName = $category->image;
+        }
+
+        $category->name = request('name');
+        $category->slug = $slug;
+        $category->image = $imageName;
+
+        if ($category->update()) {
+                $request->session()->flash('success','Category has been Updated');
+            }
+            else{
+                $request->session()->flash('error','There was an error Updated the Category');
+            }
+
+            return redirect()->route('category.index');
     }
 
     /**
@@ -163,10 +238,30 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        Category::findorFail($id)->delete();
+        $category = Category::findorFail($id);
+
+        if (Storage::disk('public')->exists('category/'.$category->image))
+            {
+                Storage::disk('public')->delete('category/'.$category->image);
+            }
+
+        if (Storage::disk('public')->exists('category/slider/'.$category->image))
+            {
+                Storage::disk('public')->delete('category/slider/'.$category->image);
+            } 
+            
+        
+        if ($category->delete())
+         {
+            $request->session()->flash('success','Category has been deleted');
+         }
+        else
+         {
+            $request->session()->flash('error','There was an error deleted the Category');
+         }       
      
-        return response()->json(['success'=>'Category deleted successfully.']);
+        return redirect()->route('category.index');
     }
 }

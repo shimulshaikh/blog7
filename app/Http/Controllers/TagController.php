@@ -35,14 +35,12 @@ class TagController extends Controller
                 ->editColumn('updated_at', function(Tag $tag) {
                     return $tag->updated_at->format('h:m:s');
                 })
-                ->addColumn('action', function($data){
-                    $button = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Edit" class="edit btn btn-info btn-sm editTag"><i class="far fa-edit"></i> Edit </a>';
-                    $button .= '&nbsp;&nbsp;';
-                    $button .= '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->id.'" data-original-title="Delete" class="delete btn btn-danger btn-sm deleteTag">Delete</a>';
+                ->addColumn('actions', function($row){
+                    $editUrl = route('tag.edit', $row->id);
+                    $deleteUrl = route('tag.destroy', $row->id);
 
-                    return $button;
-                })
-                ->rawColumns(['action'])
+                    return view('website.backend.colmun.column', compact('editUrl', 'deleteUrl'));
+                    })
                 ->addIndexColumn()->make(true);
 
         }   
@@ -57,7 +55,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view('website.backend.tag.create');
     }
 
     /**
@@ -68,19 +66,25 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        // request()->validate([
-        //         'name' => 'name'
-        //     ]);
+        request()->validate([
+                'name' => 'required'
+            ]);
 
         $slug = Str::slug($request->name, '-');
 
-        $data = Tag::updateOrCreate(['id' => $request->tag_id],
-                [
-                    'name' => $request->name,
-                    'slug' => $slug
-                ]);        
-        
-        return response()->json($data);
+        $tag = new Tag();
+
+        $tag->name = request('name');
+        $tag->slug = $slug;
+
+            if ($tag->save()) {
+                $request->session()->flash('success','Tag has been created');
+            }
+            else{
+                $request->session()->flash('error','There was an error created the Tag');
+            }
+
+            return redirect()->route('tag.index'); 
     }
 
     /**
@@ -103,7 +107,7 @@ class TagController extends Controller
     public function edit($id)
     {
         $tag = Tag::findorFail($id);
-        return response()->json($tag);
+        return view('website.backend.tag.edit', compact('tag'));
     }
 
     /**
@@ -113,9 +117,27 @@ class TagController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request)
     {
-        //
+        request()->validate([
+                'name' => 'required'
+            ]);
+
+        $slug = Str::slug($request->name, '-');
+
+        $tag = Tag::findorFail($request->id);
+
+        $tag->name = request('name');
+        $tag->slug = $slug;
+
+            if ($tag->update()) {
+                $request->session()->flash('success','Tag has been updated');
+            }
+            else{
+                $request->session()->flash('error','There was an error updated the Tag');
+            }
+
+            return redirect()->route('tag.index'); 
     }
 
     /**
@@ -124,10 +146,18 @@ class TagController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        Tag::findorFail($id)->delete();
-     
-        return response()->json(['success'=>'Tag deleted successfully.']);
+        $tag = Tag::findorFail($id);
+
+       
+        if ($tag->delete()) {
+                $request->session()->flash('success','Tag has been deleted');
+            }
+        else{
+                $request->session()->flash('error','There was an error deleted the Tag');
+            }
+
+        return redirect()->route('tag.index');
     }
 }
