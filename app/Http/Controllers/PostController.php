@@ -38,10 +38,11 @@ class PostController extends Controller
                 })
 
                 ->addColumn('actions', function($row){
+                    $showtUrl = route('post.show', $row->id);
                     $editUrl = route('post.edit', $row->id);
                     $deleteUrl = route('post.destroy', $row->id);
 
-                    return view('website.backend.colmun.column', compact('editUrl', 'deleteUrl'));
+                    return view('website.backend.post.colmun.colmun', compact('showtUrl', 'editUrl', 'deleteUrl'));
                     })
                 ->addIndexColumn()->make(true);
 
@@ -145,7 +146,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('website.backend.post.show',compact('post'));
     }
 
     /**

@@ -36,7 +36,7 @@
                                     <th>Status</th>
                                     <th>Create Time</th>
                                     <th>Update Time</th>
-                                    <th width="15%">Action</th>
+                                    <th width="20%">Action</th>
                                   </tr>
                                 </thead>
                               </table>    
