@@ -109,14 +109,19 @@ class PostController extends Controller
         $post->slug = $slug;
         $post->image = $imageName;
         $post->body = request('body');
-        //$post->view_count = request('name');
         if (isset($request->status)) {
             $post->status = true;
         }
         else{
             $post->status = false;
         }
-        $post->is_approved = true;
+
+        if (Auth::id() == 1) {
+            $post->is_approved = true;
+        }
+        else{
+            $post->is_approved = false;
+        }
         
 
         if ($post->save()) {
@@ -151,7 +156,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('website.backend.post.edit',compact('post'));
     }
 
     /**
@@ -163,7 +168,79 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        request()->validate([
+                'tags' => 'required',
+                'categories' => 'required',
+                'title' => 'required',
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+                'body' => 'required'
+            ]);
+
+        $slug = Str::slug($request->title, '-');
+
+        $image = $request->file('image');
+
+        if(isset($image)){
+
+            //make unique nake for image
+            $currentDate = Carbon::now()->toDateString();
+
+            $imageName = $slug.'-'.$currentDate.'-'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            //check post dir is exists
+            if (!Storage::disk('public')->exists('post')) 
+            {
+                Storage::disk('public')->makeDirectory('post');
+            }
+
+            //delete old post image
+            if (Storage::disk('public')->exists('post/'.$post->image))
+            {
+                Storage::disk('public')->delete('post/'.$post->image);
+            }
+
+            //resize image for post and upload
+            $img = Image::make($image)->resize(1600,1066)->save(storage_path('app/public/post').'/'.$imageName);
+            Storage::disk('public')->put('post/'.$imageName,$img);
+
+        }
+        else{
+            $imageName = $post->image;
+        }
+
+      
+
+        $post->user_id = Auth::id();
+        $post->title = request('title');
+        $post->slug = $slug;
+        $post->image = $imageName;
+        $post->body = request('body');
+        if (isset($request->status)) {
+            $post->status = true;
+        }
+        else{
+            $post->status = false;
+        }
+
+        if (Auth::id() == 1) {
+            $post->is_approved = true;
+        }
+        else{
+            $post->is_approved = false;
+        }
+        
+
+        if ($post->save()) {
+                $request->session()->flash('success','Post has been Updated');
+            }
+            else{
+                $request->session()->flash('error','There was an error Updated the Post');
+            }
+
+        $post->categories()->sync(request('categories'));
+        $post->tags()->sync(request('tags'));
+
+            return redirect()->route('post.index');
     }
 
     /**

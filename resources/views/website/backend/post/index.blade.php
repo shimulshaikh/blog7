@@ -36,7 +36,7 @@
                                     <th>Status</th>
                                     <th>Create Time</th>
                                     <th>Update Time</th>
-                                    <th>Action</th>
+                                    <th width="15%">Action</th>
                                   </tr>
                                 </thead>
                               </table>    
@@ -87,7 +87,8 @@
                     { data: 'title', name: 'title' },
                     { data: 'author', name: 'author' },
                     { data: 'view_count', name: 'view_count' },
-                    { data: 'author', name: 'author' },
+                    { data: 'is_approved', name: 'is_approved' },
+                    { data: 'status', name: 'status' },
                     { data: 'created_at', name: 'created_at' },
                     { data: 'updated_at', name: 'updated_at' },
                     { data: 'actions', name: 'actions' },
@@ -99,9 +100,11 @@
 </script>
 
 
-@if(Session::has('success'))
-  <script type="text/javascript">
-    toastr.success("{!! Session::get('success') !!}");
-  </script>
-@endif
+    @if(Session::has('success'))
+      <script type="text/javascript">
+        toastr.success("{!! Session::get('success') !!}");
+      </script>
+    @endif
+
 @endpush
+
