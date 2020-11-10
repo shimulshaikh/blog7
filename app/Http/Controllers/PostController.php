@@ -36,6 +36,25 @@ class PostController extends Controller
                 ->addColumn('author', function(Post $post) {
                     return $post->user->name;
                 })
+                ->addColumn('is_approved', function($row) {
+                    if($row->is_approved == true){
+                        $is_approvedUrl = route('post.show', $row->id);
+                        return view('website.backend.post.colmun.is_approved', compact('is_approvedUrl'));
+                    }
+                    else{
+                        $pendingUrl = route('post.show', $row->id);
+                        return view('website.backend.post.colmun.pending', compact('pendingUrl'));
+                    }
+                })
+                ->addColumn('status', function($row) {
+                    if($row->status == true){
+                        $statusApproveUrl = route('post.show', $row->id);
+                        return view('website.backend.post.colmun.satatusApproved', compact('statusApproveUrl'));
+                    }else{
+                        $statusPendingUrl = route('post.show', $row->id);
+                        return view('website.backend.post.colmun.statusPending', compact('statusPendingUrl'));
+                    }
+                })
 
                 ->addColumn('actions', function($row){
                     $showtUrl = route('post.show', $row->id);
