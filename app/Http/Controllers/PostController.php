@@ -250,8 +250,26 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Request $request, Post $post)
     {
-        //
+        //delete post image
+        if (Storage::disk('public')->exists('post/'.$post->image))
+            {
+                Storage::disk('public')->delete('post/'.$post->image);
+            }
+
+        $post->categories()->detach();
+        $post->tags()->detach();
+
+        if ($post->delete()) {
+                $request->session()->flash('success','Post has been Deleted');
+            }
+            else{
+                $request->session()->flash('error','There was an error Deleted the Post');
+            }
+
+           return redirect()->route('post.index'); 
     }
+
+
 }
