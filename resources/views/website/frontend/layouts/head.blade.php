@@ -1,24 +1,22 @@
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="TemplateMo">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
-
-    <title>@yield('title') - Blog</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{{asset('frontend/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+<head>
+  <title>@yield('title') | Blog</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
 
 
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="{{asset('frontend/assets/css/fontawesome.css')}}">
-    <link rel="stylesheet" href="{{asset('frontend/assets/css/templatemo-stand-blog.css')}}">
-    <link rel="stylesheet" href="{{asset('frontend/assets/css/owl.css')}}">
-<!--
+  <!-- Font -->
 
-TemplateMo 551 Stand Blog
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 
-https://templatemo.com/tm-551-stand-blog
 
--->
+  <!-- Stylesheets -->
+
+  <link href="{{asset('frontend/common-css/bootstrap.css')}}" rel="stylesheet">
+
+  <link href="{{asset('frontend/common-css/swiper.css')}}" rel="stylesheet">
+
+  <link href="{{asset('frontend/common-css/ionicons.css')}}" rel="stylesheet">
+
+
+</head>

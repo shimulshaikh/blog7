@@ -1,34 +1,25 @@
 
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
-
-  <head>
       @include('website.frontend.layouts.head')
-  </head>
 
-  <body>
+  @stack('css')
 
-    <!-- ***** Preloader Start ***** -->
-    <div id="preloader">
-        <div class="jumper">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>  
-    <!-- ***** Preloader End ***** -->
+  <body >
 
-    <!-- Header -->
     @include('website.frontend.layouts.header')
 
-        @yield('content')
+      @yield('content')
 
-    
-    <footer>
-      @include('website.frontend.layouts.footer')
-    </footer>
+    @include('website.frontend.layouts.footer')
 
-    @include('website.frontend.layouts.foot')
+
+    <!-- SCIPTS -->
+
+    @include('website.frontend.layouts.foot') 
+
+  @stack('js')
 
   </body>
+
 </html>
