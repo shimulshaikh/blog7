@@ -419,7 +419,20 @@
 
 @push('css')
   <link href="{{asset('frontend/front-page-category/css/styles.css')}}" rel="stylesheet">
-
   <link href="{{asset('frontend/front-page-category/css/responsive.css')}}" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 @endpush
 
+
+@push('js')
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+  @if(Session::has('success'))
+    <script type="text/javascript">
+      toastr.success("{!! Session::get('success') !!}");
+    </script>
+  @endif
+
+@endpush

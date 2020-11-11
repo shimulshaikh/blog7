@@ -1,13 +1,13 @@
 @extends('website.backend.layouts.main')
 
-@section('title','Tag')
+@section('title','Subscriber')
 
 @section('content')
 
     <div class="main-content-part">
         <ul class="nav nav-tabs">
             <li class="active">
-                <a data-toggle="tab">Tag</a>
+                <a data-toggle="tab">subscriber</a>
             </li>                    
         </ul>
 
@@ -19,7 +19,6 @@
                           <div id="my_div"></div>
                           <div class="card">
                             <div class="card-header" style="margin-bottom: 15px">
-                                   <a href="{{ route('tag.create') }}" class="btn btn-success">Add Tag</a>
                             </div>
                             <div class="card-body">
 
@@ -28,9 +27,8 @@
                                 <thead>
                                   <tr>
                                     <th>#</th>
-                                    <th>Name</th>
+                                    <th>Email</th>
                                     <th>Create Time</th>
-                                    <th>Update Time</th>
                                     <th width="15%">Action</th>
                                   </tr>
                                 </thead>
@@ -78,16 +76,15 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                      url:"{{ route('tag.index') }}",
+                      url:"{{ route('subscribe.index') }}",
                       type: 'GET'
                     },
 
                     columns: [
                     {"data": "DT_RowIndex", orderable: false, searchable: false},
-                    { data: 'name', name: 'name' },
+                    { data: 'email', name: 'email' },
                     { data: 'created_at', name: 'created_at' },
-                    { data: 'updated_at', name: 'updated_at' },
-                    { data: 'actions', name: 'actions' },
+                    { data: 'action', name: 'action' },
                   ]
 
                 });

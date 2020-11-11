@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'FrontendController@index')->name('home.index');
+Route::post('/subscriber', 'SubscribeController@store')->name('subscribe.store');
 
 
 
@@ -34,6 +35,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth'],], function() {
 	Route::resource('/post', PostController::class); 
 	Route::put('/post/{id}/approve', 'PostController@approval')->name('post.approve');
 	Route::get('/pending', 'PostController@getPending')->name('post.pending');
+
+	Route::get('/subscriber', 'ManageSubscribeController@index')->name('subscribe.index');
+	Route::delete('/subscriber/{id}', 'ManageSubscribeController@destroy')->name('subscribe.destroy');
 
 });
 

@@ -60,6 +60,18 @@
                                 <li><a href="{{route('post.pending')}}"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">Pending</a></li>
                             </ul>
                         </li>
+
+                        <li class="treeview">
+                            <a href="#">
+                                <img class="img-responsive searchIcon" src="{{asset('backend/dist/img/searchIcon.png')}}"><span class="aside-main-menu">Subscribers</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-caret-down pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="{{route('subscribe.index')}}"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">subscriber</a></li>
+                            </ul>
+                        </li>
                         
                     </ul><!-- SIDEBAR MENU PART END -->
                 </section><!-- START SIDEBAR SECTION -->
