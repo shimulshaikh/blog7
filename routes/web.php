@@ -32,6 +32,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth'],], function() {
 	Route::resource('/category', CategoryController::class);
 
 	Route::resource('/post', PostController::class); 
+	Route::put('/post/{id}/approve', 'PostController@approval')->name('post.approve');
+	Route::get('/pending', 'PostController@getPending')->name('post.pending');
 
 });
 

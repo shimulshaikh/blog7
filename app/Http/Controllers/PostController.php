@@ -38,11 +38,11 @@ class PostController extends Controller
                 })
                 ->addColumn('is_approved', function($row) {
                     if($row->is_approved == true){
-                        $is_approvedUrl = route('post.show', $row->id);
+                        $is_approvedUrl = route('post.approve', $row->id);
                         return view('website.backend.post.colmun.is_approved', compact('is_approvedUrl'));
                     }
                     else{
-                        $pendingUrl = route('post.show', $row->id);
+                        $pendingUrl = route('post.approve', $row->id);
                         return view('website.backend.post.colmun.pending', compact('pendingUrl'));
                     }
                 })
@@ -289,6 +289,83 @@ class PostController extends Controller
 
            return redirect()->route('post.index'); 
     }
+
+
+    //All pending post show
+    
+    public function getPending(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Post::where('is_approved',false)->latest();
+
+            return Datatables::of($data)
+                ->setRowId('{{$id}}')
+                ->editColumn('created_at', function(Post $post) {
+                    return $post->created_at->diffForHumans();
+                })
+                ->editColumn('updated_at', function(Post $post) {
+                    return $post->updated_at->format('h:m:s');
+                })
+                ->addColumn('author', function(Post $post) {
+                    return $post->user->name;
+                })
+                ->addColumn('is_approved', function($row) {
+                    if($row->is_approved == true){
+                        $is_approvedUrl = route('post.approve', $row->id);
+                        return view('website.backend.post.colmun.is_approved', compact('is_approvedUrl'));
+                    }
+                    else{
+                        $pendingUrl = route('post.approve', $row->id);
+                        return view('website.backend.post.colmun.pending', compact('pendingUrl'));
+                    }
+                })
+                ->addColumn('status', function($row) {
+                    if($row->status == true){
+                        $statusApproveUrl = route('post.show', $row->id);
+                        return view('website.backend.post.colmun.satatusApproved', compact('statusApproveUrl'));
+                    }else{
+                        $statusPendingUrl = route('post.show', $row->id);
+                        return view('website.backend.post.colmun.statusPending', compact('statusPendingUrl'));
+                    }
+                })
+
+                ->addColumn('actions', function($row){
+                    $showtUrl = route('post.show', $row->id);
+                    $editUrl = route('post.edit', $row->id);
+                    $deleteUrl = route('post.destroy', $row->id);
+
+                    return view('website.backend.post.colmun.colmun', compact('showtUrl', 'editUrl', 'deleteUrl'));
+                    })
+                ->addIndexColumn()->make(true);
+        }
+
+            return view('website.backend.post.pending');
+
+    }
+
+    //For post approved
+    public function approval(Request $request, $id)
+    {
+        $post = Post::findorFail($id);
+
+        if (Auth::id() == 1 && $post->is_approved == false) {
+            $post->is_approved = true;
+
+            if ($post->update()) {
+                $request->session()->flash('success','Post has been Approved');
+            }
+            else{
+                $request->session()->flash('error','There was an error Approved the Post');
+            }
+            return redirect()->back();
+        }
+        else{
+            $request->session()->flash('success','Sorry you are not Admin');
+            return redirect()->back();
+        }
+    }
+
+
 
 
 }

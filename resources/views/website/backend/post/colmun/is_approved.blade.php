@@ -1,3 +1,9 @@
+
 <div class="btn-toolbar">
-	  <a href="{!! $is_approvedUrl !!}" aria-pressed="true" style="margin-right: 4px;"><span class="badge bg-blue">Approved</span></a>
-</div>
+	<form  action="{!! $is_approvedUrl !!}" method="POST">
+		<input type="hidden" name="_method" value="delete">
+		@csrf                                              
+		@method('PUT')
+			<button class="" onclick="return confirm('Are You sure want to Approve !')" disabled><span class="badge bg-blue">Approved</span></button>
+	</form>	
+</div>	

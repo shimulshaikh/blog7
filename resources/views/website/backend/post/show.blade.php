@@ -18,9 +18,13 @@
               <span>Approved</span>
             </button>
           @else
-            <button type="button" class="btn btn-success pull-right">
-              <span>Approved</span>
-            </button>
+            <!-- <form  action="{{route('post.approve',$post->id)}}" method="POST">
+              @csrf                                              
+              @method('PUT') -->
+                <button type="button" class="btn btn-success pull-right">
+                  <span>Approved</span>
+                </button>
+            <!-- </form> --> 
           @endif 
       
             <div class="container-fluid">

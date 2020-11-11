@@ -1,3 +1,8 @@
+
 <div class="btn-toolbar">
-	<a href="{!! $pendingUrl !!}" aria-pressed="true" style="margin-right: 4px;"><span class="badge bg-pink">Pending..</span></a>
-</div>	
+	<form  action="{!! $pendingUrl !!}" method="POST">
+		@csrf                                              
+		@method('PUT')
+			<button class="" onclick="return confirm('Are You sure want to Approve !')"><span class="badge bg-pink">Pending..</span></button>
+	</form>	
+</div>
