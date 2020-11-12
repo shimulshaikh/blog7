@@ -428,11 +428,17 @@
 @push('js')
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+{!! Toastr::message() !!}
 
-  @if(Session::has('success'))
-    <script type="text/javascript">
-      toastr.success("{!! Session::get('success') !!}");
-    </script>
-  @endif
+<script type="text/javascript">
+  @if ($errors->any())  
+    @foreach($errors->all() as $error)
+      toastr.error('{{ $error }}', 'Error',{
+        closeButton:true,
+        progressBar:true,
+      });
+    @endforeach
+  @endif 
+</script>
 
 @endpush

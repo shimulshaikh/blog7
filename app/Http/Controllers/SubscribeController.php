@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Subscribe;
 use Illuminate\Http\Request;
+use Toastr;
 
 class SubscribeController extends Controller
 {
@@ -43,12 +44,9 @@ class SubscribeController extends Controller
 
         $subscribe->email = request('email');
 
-        if ($subscribe->save()) {
-                $request->session()->flash('success','You successfully added to our subsciber list!');
-            }
-            else{
-                $request->session()->flash('error','There was an error added the subsciber');
-            }
+        $subscribe->save();
+            
+            Toastr::success('You successfully added to our subsciber list!');
 
             return redirect()->back(); 
     }

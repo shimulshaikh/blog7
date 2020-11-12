@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Post;
-use App\Tag;
-use App\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 use Image;
 use Auth;
 use Redirect,Response;
+use App\Notifications\NewAuthorPost;
 
 class PostController extends Controller
 {
@@ -136,7 +137,8 @@ class PostController extends Controller
             $post->status = false;
         }
 
-        if (Auth::id() == 1) {
+        ////Auth::Role()->name == 'admin'
+        if (Auth::id() == 1) { 
             $post->is_approved = true;
         }
         else{
@@ -154,6 +156,13 @@ class PostController extends Controller
         $post->categories()->attach(request('categories'));
         $post->tags()->attach(request('tags'));
 
+        //For mail notification send
+        if(!(Auth::id() == 1)){
+                $users = User::where('id','1')->get();
+                Notification::send($users, new NewAuthorPost($post));
+        }
+        
+
             return redirect()->route('post.index');
     }
 
@@ -163,9 +172,11 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Request $request, Post $post)
     {
+
         return view('website.backend.post.show',compact('post'));
+                
     }
 
     /**
