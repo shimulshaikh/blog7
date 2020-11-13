@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'FrontendController@index')->name('home.index');
+Route::get('/all-post', 'FrontendController@getPost')->name('all-post');
 Route::post('/subscriber', 'SubscribeController@store')->name('subscribe.store');
 
 

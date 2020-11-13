@@ -68,8 +68,6 @@
 
       </div><!-- row -->
 
-      <a class="load-more-btn" href="{{route('all-post')}}"><b>LOAD MORE</b></a>
-
     </div><!-- container -->
   </section><!-- section -->
 

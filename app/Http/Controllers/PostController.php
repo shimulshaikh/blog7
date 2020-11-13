@@ -157,10 +157,10 @@ class PostController extends Controller
         $post->tags()->attach(request('tags'));
 
         //For mail notification send
-        if(!(Auth::id() == 1)){
-                $users = User::where('id','1')->get();
-                Notification::send($users, new NewAuthorPost($post));
-        }
+        // if(!(Auth::id() == 1)){
+        //         $users = User::where('id','1')->get();
+        //         Notification::send($users, new NewAuthorPost($post));
+        // }
         
 
             return redirect()->route('post.index');
