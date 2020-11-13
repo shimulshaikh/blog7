@@ -21,12 +21,15 @@ class Post extends Model
     public function categories()
     {
     	return $this->belongsToMany(Category::class)->withTimestamps();
-        //return $this->belongsToMany(Category::class, 'category_post','post_id','category_id');
     }
 
     public function tags()
     {
     	return $this->belongsToMany(Tag::class)->withTimestamps();
-        //return $this->belongsToMany(Tag::class, 'post_tag','post_id','tag_id');
+    }
+
+    public function favorite_user()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }
