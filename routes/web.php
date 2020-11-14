@@ -22,6 +22,8 @@ Route::post('/favorite/{id}/add', 'FavoriteController@addFavorite')->name('post.
 
 Route::get('/post-details/{slug}', 'PostDetailsController@postDetails')->name('post.details');
 
+Route::get('/search', 'SearchController@search')->name('search');
+
 
 
 Auth::routes();

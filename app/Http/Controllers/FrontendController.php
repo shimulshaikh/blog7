@@ -17,8 +17,7 @@ class FrontendController extends Controller
 
     public function getPost()
     {
-    	$categorys = Category::all();
-    	$posts = Post::all();
-    	return view('website.frontend.home.showAllPost', compact('categorys', 'posts'));
+    	$posts = Post::latest()->paginate(6);
+    	return view('website.frontend.home.showAllPost', compact('posts'));
     }
 }

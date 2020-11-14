@@ -7,14 +7,14 @@
 
       <ul class="main-menu visible-on-click" id="main-menu">
         <li><a href="{{route('home.index')}}">Home</a></li>
-        <li><a href="#">Categories</a></li>
+        <li><a href="{{route('all-post')}}">Post</a></li>
         <li><a href="#">Features</a></li>
       </ul><!-- main-menu -->
 
       <div class="src-area">
-        <form>
+        <form method="GET" action="{{ route('search') }}">
           <button class="src-btn" type="submit"><i class="ion-ios-search-strong"></i></button>
-          <input class="src-input" type="text" placeholder="Type of search">
+          <input class="src-input" type="text" name="search" placeholder="Type of search">
         </form>
       </div>
 

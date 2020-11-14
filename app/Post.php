@@ -32,4 +32,10 @@ class Post extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('is_approved', true);
+    }
+
 }
