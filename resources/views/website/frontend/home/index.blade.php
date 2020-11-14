@@ -52,7 +52,7 @@
 
                 <div class="blog-info">
 
-                  <h4 class="title"><a href="#"><b>{{ $post->title  }}</b></a></h4>
+                  <h4 class="title"><a href="{{route('post.details',$post->slug)}}"><b>{{ $post->title  }}</b></a></h4>
 
                   <ul class="post-footer">
 
@@ -62,19 +62,19 @@
                                 closeButton:true,
                                 progressBar:true,
                           })">
-                            <i class="ion-heart"></i>{{ $post->favorite_user->count() }}
+                            <i class="material-icons">favorite</i>{{ $post->favorite_user->count() }}
                           </a>
                       @else
                           <a href="javascript:void(0);" onclick="document.getElementById('favorite-form-{{ $post->id }}').submit();" class="{{ !Auth::user()->favorite_post->where('pivot.post_id',$post->id)->count() == 0 ? 'favorite_post_color' : '' }}">
-                            <i class="ion-heart"></i>{{ $post->favorite_user->count() }}
+                            <i class="material-icons">favorite</i>{{ $post->favorite_user->count() }}
                           </a>
                           <form id="favorite-form-{{ $post->id }}" method="POST" action="{{route('post.favorite', $post->id )}}" style="display: none;">
                             @csrf
                           </form>
                       @endguest
                     </li>
-                    <li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-                    <li><a href="#"><i class="ion-eye"></i>{{ $post->view_count  }}</a></li>
+                    <li><a href="#"><i class="material-icons">comment</i>6</a></li>
+                    <li><a href="#"><i class="material-icons">visibility</i>{{ $post->view_count  }}</a></li>
                   </ul>
 
                 </div><!-- blog-info -->
@@ -93,6 +93,7 @@
 @stop
 
 @push('css')
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="{{asset('frontend/front-page-category/css/styles.css')}}" rel="stylesheet">
   <link href="{{asset('frontend/front-page-category/css/responsive.css')}}" rel="stylesheet">
 
@@ -108,6 +109,7 @@
 
 
 @push('js')
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 {!! Toastr::message() !!}

@@ -20,6 +20,8 @@ Route::post('/subscriber', 'SubscribeController@store')->name('subscribe.store')
 
 Route::post('/favorite/{id}/add', 'FavoriteController@addFavorite')->name('post.favorite');
 
+Route::get('/post-details/{slug}', 'PostDetailsController@postDetails')->name('post.details');
+
 
 
 Auth::routes();
@@ -42,6 +44,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth'],], function() {
 
 	Route::get('/subscriber', 'ManageSubscribeController@index')->name('subscribe.index');
 	Route::delete('/subscriber/{id}', 'ManageSubscribeController@destroy')->name('subscribe.destroy');
+
+	Route::get('/favorite', 'ShowFavoriteController@index')->name('favorite.index');
 
 });
 

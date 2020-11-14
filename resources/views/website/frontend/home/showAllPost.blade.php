@@ -1,6 +1,6 @@
 @extends('website.frontend.layouts.main')
 
-@section('title','Home')
+@section('title','All-Post')
 
 @section('content')
 
@@ -48,16 +48,33 @@
                 <div class="blog-image"><img src="{{ asset('/storage/post') }}/{{ $post->image  }}" alt="{{ $post->title  }}"></div>
 
 
-                <a class="avatar" href="#"><img src="{{('frontend/images/icons8-team-355979.jpg')}}" alt="Profile Image"></a>
+                <!-- <a class="avatar" href="#"><img src="{{('frontend/images/icons8-team-355979.jpg')}}" alt="Profile Image"></a> -->
 
                 <div class="blog-info">
 
-                  <h4 class="title"><a href="#"><b>{{ $post->title  }}</b></a></h4>
+                  <h4 class="title"><a href="{{route('post.details',$post->slug)}}"><b>{{ $post->title  }}</b></a></h4>
 
                   <ul class="post-footer">
-                    <li><a href="#"><i class="ion-heart"></i>57</a></li>
-                    <li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-                    <li><a href="#"><i class="ion-eye"></i>138</a></li>
+
+                    <li>
+                      @guest
+                          <a href="javascript:void(0);" onclick="toastr.info('To add favorite list. You need to login first.','info',{
+                                closeButton:true,
+                                progressBar:true,
+                          })">
+                            <i class="material-icons">favorite</i>{{ $post->favorite_user->count() }}
+                          </a>
+                      @else
+                          <a href="javascript:void(0);" onclick="document.getElementById('favorite-form-{{ $post->id }}').submit();" class="{{ !Auth::user()->favorite_post->where('pivot.post_id',$post->id)->count() == 0 ? 'favorite_post_color' : '' }}">
+                            <i class="material-icons">favorite</i>{{ $post->favorite_user->count() }}
+                          </a>
+                          <form id="favorite-form-{{ $post->id }}" method="POST" action="{{route('post.favorite', $post->id )}}" style="display: none;">
+                            @csrf
+                          </form>
+                      @endguest
+                    </li>
+                    <li><a href="#"><i class="material-icons">comment</i>6</a></li>
+                    <li><a href="#"><i class="material-icons">visibility</i>{{ $post->view_count  }}</a></li>
                   </ul>
 
                 </div><!-- blog-info -->
@@ -68,20 +85,30 @@
 
       </div><!-- row -->
 
+
     </div><!-- container -->
   </section><!-- section -->
 
 @stop
 
 @push('css')
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="{{asset('frontend/front-page-category/css/styles.css')}}" rel="stylesheet">
   <link href="{{asset('frontend/front-page-category/css/responsive.css')}}" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+<!-- For favorite Icon color chanding -->
+  <style type="text/css">
+    .favorite_post_color{
+      color: blue;
+    }
+  </style>
 @endpush
 
 
 @push('js')
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 {!! Toastr::message() !!}

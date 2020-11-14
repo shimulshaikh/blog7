@@ -59,6 +59,9 @@
                             <ul class="treeview-menu">
                                 <li><a href="{{route('post.pending')}}"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">Pending</a></li>
                             </ul>
+                            <ul class="treeview-menu">
+                                <li><a href="{{route('favorite.index')}}"><img class="img-responsive bulletIcon" src="{{asset('backend/dist/img/bulletIcon.png')}}">Favorite</a></li>
+                            </ul>
                         </li>
 
                         <li class="treeview">
