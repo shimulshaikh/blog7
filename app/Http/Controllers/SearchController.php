@@ -10,7 +10,7 @@ class SearchController extends Controller
     public function search(Request $request)
     {
     	$query = $request->input('search');
-    	$posts = Post::where('title','LIKE',"%$query%")->Approved()->get();
+    	$posts = Post::where('title','LIKE',"%$query%")->Approved()->Published()->get();
 
     	return view('website.frontend.search.index', compact('posts','query'));
     }

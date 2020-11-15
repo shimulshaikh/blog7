@@ -42,6 +42,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth'],], function() {
 
 	Route::resource('/post', PostController::class); 
 	Route::put('/post/{id}/approve', 'PostController@approval')->name('post.approve');
+	Route::put('/post/{id}/status', 'PostController@status')->name('post.status');
 	Route::get('/pending', 'PostController@getPending')->name('post.pending');
 
 	Route::get('/subscriber', 'ManageSubscribeController@index')->name('subscribe.index');

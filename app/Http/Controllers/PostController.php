@@ -49,10 +49,10 @@ class PostController extends Controller
                 })
                 ->addColumn('status', function($row) {
                     if($row->status == true){
-                        $statusApproveUrl = route('post.show', $row->id);
+                        $statusApproveUrl = route('post.status', $row->id);
                         return view('website.backend.post.colmun.satatusApproved', compact('statusApproveUrl'));
                     }else{
-                        $statusPendingUrl = route('post.show', $row->id);
+                        $statusPendingUrl = route('post.status', $row->id);
                         return view('website.backend.post.colmun.statusPending', compact('statusPendingUrl'));
                     }
                 })
@@ -377,6 +377,41 @@ class PostController extends Controller
     }
 
 
+    //For post approved
+    public function status(Request $request, $id)
+    {
+        $post = Post::findorFail($id);
+
+        if (Auth::id() == 1) {
+
+            if ($post->status == false) {
+                $post->status = true;
+
+                    if ($post->update()) {
+                        $request->session()->flash('success','Post Status has been Published');
+                    }
+                    else{
+                        $request->session()->flash('error','There was an error Published the Post Status');
+                    }
+                    return redirect()->back();
+                }else{
+                    $post->status = false;
+
+                    if ($post->update()) {
+                        $request->session()->flash('success','Post Status has been Pending');
+                    }
+                    else{
+                        $request->session()->flash('error','There was an error Pending the Post Status');
+                    }
+                    return redirect()->back();
+                }
+                
+        }
+        else{
+            $request->session()->flash('success','Sorry you are not Admin');
+            return redirect()->back();
+        }
+    }
 
 
 }

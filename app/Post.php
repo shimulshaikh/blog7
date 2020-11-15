@@ -38,4 +38,9 @@ class Post extends Model
         return $query->where('is_approved', true);
     }
 
+    public function scopePublished($query)
+    {
+        return $query->where('status', true);
+    }
+
 }
