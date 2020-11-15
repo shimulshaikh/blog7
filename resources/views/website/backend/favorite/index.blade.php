@@ -75,8 +75,8 @@
                     {"data": "DT_RowIndex", orderable: false, searchable: false},
                     { data: 'title', name: 'title' },
                     { data: 'author', name: 'author' },
-                    { data: 'favorite', name: 'favorite' },
-                    { data: 'view_count', name: 'view_count' },
+                    { data: 'favorite', name: 'favorite', orderable: false, searchable: false },
+                    { data: 'view_count', name: 'view_count', orderable: false, searchable: false },
                     { data: 'created_at', name: 'created_at' },
                     { data: 'updated_at', name: 'updated_at' },
                   ]

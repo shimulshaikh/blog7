@@ -11,13 +11,14 @@ class FrontendController extends Controller
     public function index()
     {
     	$categorys = Category::all();
-        $posts = Post::where('is_approved', true)->Published()->take(6)->get();
-    	return view('website.frontend.home.index', compact('categorys', 'posts'));
+        $categoryFooter = Category::paginate(3);
+        $posts = Post::approved()->published()->take(6)->get();
+    	return view('website.frontend.home.index', compact('categorys', 'posts','categoryFooter'));
     }
 
     public function getPost()
     {
-        $posts = Post::where('is_approved', true)->Published()->take(6)->paginate(6);
+        $posts = Post::approved()->published()->take(6)->paginate(6);
     	return view('website.frontend.home.showAllPost', compact('posts'));
     }
 }

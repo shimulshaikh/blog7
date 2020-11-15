@@ -3,6 +3,6 @@
 		<input type="hidden" name="_method" value="delete">
 		@csrf                                              
 		@method('PUT')
-			<button class="" onclick="return confirm('Are You sure want to Pending !')"><span class="badge bg-blue">Approved</span></button>
+			<button class="" onclick="return confirm('Are You sure want to Pending !')"><span class="badge bg-blue">Published</span></button>
 	</form>	
 </div>	

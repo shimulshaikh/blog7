@@ -86,12 +86,12 @@
                     {"data": "DT_RowIndex", orderable: false, searchable: false},
                     { data: 'title', name: 'title' },
                     { data: 'author', name: 'author' },
-                    { data: 'view_count', name: 'view_count' },
-                    { data: 'is_approved', name: 'is_approved' },
-                    { data: 'status', name: 'status' },
+                    { data: 'view_count', name: 'view_count', orderable: false, searchable: false },
+                    { data: 'is_approved', name: 'is_approved', orderable: false, searchable: false },
+                    { data: 'status', name: 'status', orderable: false, searchable: false},
                     { data: 'created_at', name: 'created_at' },
                     { data: 'updated_at', name: 'updated_at' },
-                    { data: 'actions', name: 'actions' },
+                    { data: 'actions', name: 'actions', orderable: false, searchable: false },
                   ]
 
                 });

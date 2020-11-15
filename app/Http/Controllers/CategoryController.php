@@ -34,9 +34,12 @@ class CategoryController extends Controller
                 ->editColumn('updated_at', function(Category $category) {
                     return $category->updated_at->format('h:m:s');
                 })
-                ->addColumn('categoryImage', function($category) {
-                    $url=asset("/storage/$category->image"); 
-                    return '<img src='.$url.' border="0" width="40" class="img-rounded" align="center" />';
+                ->addColumn('postCount', function(Category $category){
+                    return $category->posts()->count();
+                    })
+                ->addColumn('image', function($category) {
+                    $url=asset("/storage/category/$category->image"); 
+                    return '<img src='.$url.' border="0" width="50" class="img-rounded" align="center" />';
                 })
                 ->rawColumns(['image', 'action'])
 

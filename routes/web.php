@@ -21,8 +21,16 @@ Route::post('/subscriber', 'SubscribeController@store')->name('subscribe.store')
 Route::post('/favorite/{id}/add', 'FavoriteController@addFavorite')->name('post.favorite');
 
 Route::get('/post-details/{slug}', 'PostDetailsController@postDetails')->name('post.details');
+Route::get('/category/{slug}', 'PostDetailsController@postByCategory')->name('category.posts');
+Route::get('/tag/{slug}', 'PostDetailsController@postByTag')->name('tag.posts');
 
 Route::get('/search', 'SearchController@search')->name('search');
+
+
+View::composer('website.frontend.layouts.footer', function($view){
+	$categories = App\Category::paginate(3);
+	$view->with('categories', $categories);
+});
 
 
 

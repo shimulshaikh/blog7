@@ -29,6 +29,7 @@
                                   <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Post Count</th>
                                     <th>Create Time</th>
                                     <th>Update Time</th>
                                     <th width="15%">Action</th>
@@ -85,9 +86,10 @@
                     columns: [
                     {"data": "DT_RowIndex", orderable: false, searchable: false},
                     { data: 'name', name: 'name' },
+                    { data: 'postCount', name: 'postCount', orderable: false, searchable: false },
                     { data: 'created_at', name: 'created_at' },
                     { data: 'updated_at', name: 'updated_at' },
-                    { data: 'actions', name: 'actions' },
+                    { data: 'actions', name: 'actions', orderable: false, searchable: false },
                   ]
 
                 });

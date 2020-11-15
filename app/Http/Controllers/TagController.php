@@ -35,6 +35,9 @@ class TagController extends Controller
                 ->editColumn('updated_at', function(Tag $tag) {
                     return $tag->updated_at->format('h:m:s');
                 })
+                ->addColumn('postCount', function(Tag $tag) {
+                    return $tag->posts()->count();
+                })
                 ->addColumn('actions', function($row){
                     $editUrl = route('tag.edit', $row->id);
                     $deleteUrl = route('tag.destroy', $row->id);
