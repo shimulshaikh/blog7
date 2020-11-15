@@ -6,8 +6,7 @@
         <div class="col-lg-4 col-md-6">
           <div class="footer-section">
 
-            <a class="logo" href="#"><img src="{{('frontend/images/logo.png')}}" alt="Logo Image"></a>
-            <p class="copyright">Blog @ {{ now()->year }}. All rights reserved.</p>
+            <p class="copyright">{{ config('app.name') }} @ {{ now()->year }}. All rights reserved.</p>
             <p class="copyright">Designed by <a href="https://colorlib.com" target="_blank">Colorlib</a>.Downloaded from <a href="https://themeslab.org/" target="_blank">Themeslab</a></p>
             <ul class="icons">
               <li><a href="#"><i class="ion-social-facebook-outline"></i></a></li>

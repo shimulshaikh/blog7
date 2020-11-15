@@ -24,6 +24,24 @@
                             </div>
                             <div class="card-body">
 
+                              <!-- Start For time search -->
+                              <div  style="margin-bottom: 20px;" class="row">
+                                <div class="col-md-3">
+                                  <input type="date"   id="start_date"  name="start_date"  required="required"
+                                         placeholder="From Date" class="form-control year-picker">
+                                </div>
+
+                                <div class="col-md-3">
+                                  <input type="date"   id="end_date"  name="end_date"  required="required"
+                                         placeholder="From Date" class="form-control year-picker">
+                                </div>
+
+                                <div class="col-md-2">
+                                  <button type="submit" id="btnFilterSubmitSearch" class="btn btn-info btn-sm">Filter</button>
+                                </div>
+                              </div>
+                              <!-- End for time search -->
+
                                    
                               <table id="data_table" class="table table-striped table-borderd">
                                 <thead>
@@ -66,20 +84,20 @@
 <script type="text/javascript">
 
         $(document).ready( function () {
-
-            $.ajaxSetup({
-                headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
           
-        var table =  $('#data_table').DataTable({
+                $('#data_table').DataTable({
                     order: [[1, 'dsc']],
                     processing: true,
                     serverSide: true,
                     ajax: {
                       url:"{{ route('post.index') }}",
-                      type: 'GET'
+                      type: 'GET',
+                      // Statr for date range search
+                      data: function (d) {
+                          d.start_date = $('#start_date').val();
+                          d.end_date = $('#end_date').val();
+                           }
+                      // End for date range search     
                     },
 
                     columns: [
@@ -97,6 +115,13 @@
                 });
 
     });
+
+
+      // Statr for date range search
+      $('#btnFilterSubmitSearch').click(function(){
+          $('#data_table').DataTable().draw(true);
+      });
+      // End for date range search        
 </script>
 
 

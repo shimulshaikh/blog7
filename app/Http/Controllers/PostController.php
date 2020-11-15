@@ -26,7 +26,25 @@ class PostController extends Controller
     {
         if ($request->ajax()) {
 
-            return Datatables::of(Post::query()->latest())
+
+            //Start for date range search
+            $postQuery = Post::query()->latest();
+
+            $startDate = (!empty($_GET["start_date"])) ? ($_GET["start_date"]) : ('');
+            $endDate = (!empty($_GET["end_date"])) ? ($_GET["end_date"]) : ('');
+
+            if ($startDate && $endDate) {
+                $startDate = date('y-m-d', strtotime($startDate));
+                $endDate = date('y-m-d', strtotime($endDate)); 
+
+                $postQuery->whereRaw("date(posts.created_at) >= '" . $startDate . "' AND date(posts.created_at) <= '" . $endDate  . "'");
+            }
+            //End for date range search
+
+            $posts = $postQuery->select('*');
+
+
+            return Datatables::of($posts)
                 ->setRowId('{{$id}}')
                 ->editColumn('created_at', function(Post $post) {
                     return $post->created_at->diffForHumans();
