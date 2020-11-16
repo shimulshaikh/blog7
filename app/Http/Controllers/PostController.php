@@ -26,22 +26,36 @@ class PostController extends Controller
     {
         if ($request->ajax()) {
 
+            if(empty($request->user)){
+                //Start for date range search
+                $postQuery = Post::query()->latest();
 
-            //Start for date range search
-            $postQuery = Post::query()->latest();
+                $startDate = (!empty($_GET["start_date"])) ? ($_GET["start_date"]) : ('');
+                $endDate = (!empty($_GET["end_date"])) ? ($_GET["end_date"]) : ('');
 
-            $startDate = (!empty($_GET["start_date"])) ? ($_GET["start_date"]) : ('');
-            $endDate = (!empty($_GET["end_date"])) ? ($_GET["end_date"]) : ('');
+                if ($startDate && $endDate) {
+                    $startDate = date('y-m-d', strtotime($startDate));
+                    $endDate = date('y-m-d', strtotime($endDate)); 
 
-            if ($startDate && $endDate) {
-                $startDate = date('y-m-d', strtotime($startDate));
-                $endDate = date('y-m-d', strtotime($endDate)); 
+                    $postQuery->whereRaw("date(posts.created_at) >= '" . $startDate . "' AND date(posts.created_at) <= '" . $endDate  . "'");
+                }
+                //End for date range search
 
-                $postQuery->whereRaw("date(posts.created_at) >= '" . $startDate . "' AND date(posts.created_at) <= '" . $endDate  . "'");
+                $posts = $postQuery->select('*');    
+            }    
+
+            else{
+                
+                    if ($request->get('user')) {
+                        $posts = Post::where('user_id', '=', $request->user);
+                    }
+
+                    else{
+                        $posts = Post::query()->latest();
+                    }
             }
-            //End for date range search
 
-            $posts = $postQuery->select('*');
+            
 
 
             return Datatables::of($posts)

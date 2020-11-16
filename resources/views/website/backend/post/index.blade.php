@@ -24,9 +24,24 @@
                             </div>
                             <div class="card-body">
 
+                              <!-- Start custom search -->
+                              <div class="col-md-2 col-md-2" style="margin-bottom: 20px">
+                                <select class="form-control" name="user" id="user" id="sel1">
+                                  <option value="0">--Select User--</option>
+                                  @foreach(\App\User::all() as $user) 
+                                   <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                  @endforeach
+                                </select>                    
+                              </div>
+
+                              <div class="col-md-2">
+                                <button type="submit" id="custom_filter" class="btn btn-info btn-sm">Filter
+                                </button>
+                              </div>
+                              <!-- End custom search -->
+
                               <!-- Start For time search -->
-                              <div  style="margin-bottom: 20px;" class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-3" style="margin-bottom: 20px;" class="row">
                                   <input type="date"   id="start_date"  name="start_date"  required="required"
                                          placeholder="From Date" class="form-control year-picker">
                                 </div>
@@ -39,7 +54,6 @@
                                 <div class="col-md-2">
                                   <button type="submit" id="btnFilterSubmitSearch" class="btn btn-info btn-sm">Filter</button>
                                 </div>
-                              </div>
                               <!-- End for time search -->
 
                                    
@@ -96,6 +110,7 @@
                       data: function (d) {
                           d.start_date = $('#start_date').val();
                           d.end_date = $('#end_date').val();
+                          d.user = $('#user').val();
                            }
                       // End for date range search     
                     },
@@ -121,7 +136,14 @@
       $('#btnFilterSubmitSearch').click(function(){
           $('#data_table').DataTable().draw(true);
       });
-      // End for date range search        
+      // End for date range search 
+
+      //Statr for custom search
+        $('#custom_filter').click(function () {
+              $('#data_table').DataTable().draw(true);
+        });
+      // End for date custom search   
+  
 </script>
 
 
