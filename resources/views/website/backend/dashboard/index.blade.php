@@ -10,23 +10,69 @@
                                             <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i></button>
                                         </a>
                                     </li>
-
-                                    <li>
-                                        <a data-toggle="tab" href="#accountSetup">Account Setup
-                                            <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i></button>
-                                        </a>
-                                    </li>
                                 </ul>
 
                                 <div class="tab-content">
-                                    <div id="home" class="tab-pane fade in active">
-                                        <p><img class="img-responsive" src="{{asset('backend/dist/img/curentBulb.png')}}" style="width: 100%;"></p>
-                                    </div>
-                                    
-                                    <div id="accountSetup" class="tab-pane fade">
-                                        <h3>Account Setup</h3>
-                                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                                    </div>
+                                    <!-- For Highchart -->
+                                    <div id="chartContainer"></div>
                                 </div>
                             </div>
-@endsection                            
+@stop
+
+
+@push('js')
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+
+<!-- Start HighChart -->
+<script type="text/javascript">
+     var post =  <?php echo json_encode($postData) ?>;
+   
+    Highcharts.chart('chartContainer', {
+        title: {
+            text: 'New Post Growth, {{ now()->year }}'
+        },
+        // subtitle: {
+        //     text: 'Source: codechief.org'
+        // },
+         xAxis: {
+            categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        },
+        yAxis: {
+            title: {
+                text: 'Number of New Post'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+        },
+        plotOptions: {
+            series: {
+                allowPointSelect: true
+            }
+        },
+        series: [{
+            name: 'New Post',
+            data: post
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
+});
+</script>
+<!-- End HighChart -->
+
+@endpush                           
