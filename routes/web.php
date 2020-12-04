@@ -52,6 +52,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth'],], function() {
 	Route::put('/post/{id}/approve', 'PostController@approval')->name('post.approve');
 	Route::put('/post/{id}/status', 'PostController@status')->name('post.status');
 	Route::get('/pending', 'PostController@getPending')->name('post.pending');
+	Route::get('/trash-list', 'PostController@getTrash')->name('post.trash');
+	Route::get('/trash-list/restore/{id}', 'PostController@restore')->name('post.restore');
+	Route::delete('/trash-list/p_delere/{id}', 'PostController@parmanentDelete')->name('post.p_delere');
 
 	Route::get('/subscriber', 'ManageSubscribeController@index')->name('subscribe.index');
 	Route::delete('/subscriber/{id}', 'ManageSubscribeController@destroy')->name('subscribe.destroy');

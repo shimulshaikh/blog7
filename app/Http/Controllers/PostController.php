@@ -315,13 +315,13 @@ class PostController extends Controller
     public function destroy(Request $request, Post $post)
     {
         //delete post image
-        if (Storage::disk('public')->exists('post/'.$post->image))
-            {
-                Storage::disk('public')->delete('post/'.$post->image);
-            }
+        // if (Storage::disk('public')->exists('post/'.$post->image))
+        //     {
+        //         Storage::disk('public')->delete('post/'.$post->image);
+        //     }
 
-        $post->categories()->detach();
-        $post->tags()->detach();
+        // $post->categories()->detach();
+        // $post->tags()->detach();
 
         if ($post->delete()) {
                 $request->session()->flash('success','Post has been Deleted');
@@ -443,6 +443,64 @@ class PostController extends Controller
             $request->session()->flash('success','Sorry you are not Admin');
             return redirect()->back();
         }
+    }
+
+
+    public function getTrash(Request $request)
+    {
+        if ($request->ajax()) {
+
+            return Datatables::of(Post::query()->onlyTrashed()->latest())
+                ->setRowId('{{$id}}')
+                ->editColumn('created_at', function(Post $post) {
+                    return $post->created_at->diffForHumans();
+                })
+                ->editColumn('updated_at', function(Post $post) {
+                    return $post->updated_at->format('h:m:s');
+                })
+                ->addColumn('author', function(Post $post) {
+                    return $post->user->name;
+                })
+               
+
+                ->addColumn('actions', function($row){
+                    $restoreUrl = route('post.restore', $row->id);
+                    $pDeleteUrl = route('post.p_delere', $row->id);
+
+                    return view('website.backend.post.colmun.soft_delete', compact('restoreUrl', 'pDeleteUrl'));
+                    })
+                ->addIndexColumn()->make(true);
+
+        }
+
+        return view('website.backend.post.trashList');   
+    }
+
+    public function restore(Request $request, $id)
+    {
+        Post::withTrashed()->find($id)->restore();
+
+        $request->session()->flash('success','Successfully Post Restored');
+        return redirect()->back();
+    }
+
+    public function parmanentDelete(Request $request, $id)
+    {
+        $post = Post::onlyTrashed()->find($id);
+
+        //delete post image
+        if (Storage::disk('public')->exists('post/'.$post->image))
+            {
+                Storage::disk('public')->delete('post/'.$post->image);
+            }
+
+        $post->categories()->detach();
+        $post->tags()->detach();
+
+        Post::onlyTrashed()->find($id)->forceDelete();
+
+        $request->session()->flash('success','Successfully Post Permanently Deleted');
+        return redirect()->back();
     }
 
 
